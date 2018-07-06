@@ -1,33 +1,20 @@
 import './shim';
-import getWeb3 from './src/utils/getWeb3';
 import React from 'react';
-import SimpleApp from './src/SimpleApp';
 import {
   AppRegistry,
   Text,
 } from 'react-native';
 import { Provider } from 'react-redux';
-import store from './src/store';
-import { setWeb3, getAccount, getAccounts, getBalance, getTransactionCount } from './src/actions';
+import Web3Manager from './src/utils/Web3Manager';
+import SimpleStorageContract from './build/contracts/SimpleStorage.json';
 
-const web3 = getWeb3();
+const App = () => (
+  <Provider store={null}>
+    <Web3Manager
+      network="https://ropsten.infura.io/"
+      contracts={[ SimpleStorageContract ]}
+    />
+  </Provider>
+);
 
-store.dispatch(setWeb3(web3));
-
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentWillMount() {
-    store.dispatch(getAccount());
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <SimpleApp />
-      </Provider>
-    );
-  }
-}
+export default App;
