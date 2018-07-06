@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
+    "bluebird": "^3.5.1",
     "buffer": "^5.0.8",
     "node-libs-browser": "^2.0.0",
     "process": "^0.11.10",
@@ -28,6 +29,7 @@
     "react-native": "^0.48.4",
     "react-native-bip39": "^2.3.0",
     "react-native-elements": "^0.17.0",
+    "react-native-keychain": "^3.0.0-rc.3",
     "react-native-modal-picker": "0.0.16",
     "react-native-randombytes": "^3.0.0",
     "react-native-vector-icons": "^4.4.2",

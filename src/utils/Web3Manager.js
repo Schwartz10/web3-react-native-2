@@ -26,6 +26,10 @@ class Web3Manager extends Component {
     }
   }
 
+  componentDidUpdate() {
+    // need to re-invoke this.initializeContracts when network changes
+  }
+
   initializeContracts(web3) {
     return Promise.all(this.props.contracts.map(async contractJson => {
       try {
