@@ -10,8 +10,8 @@ import { getMnemonic } from '../NATIVE/keychainOps';
 export default (SuccessRoute, network, contractJsons) => {
   class Web3Manager extends Component {
     async componentDidMount() {
-      const hasMnemonic = await this.checkMnemonic();
-      if (hasMnemonic) await this.collectBlockchainInfo();
+      const mnemonic = await this.checkMnemonic();
+      if (mnemonic) await this.collectBlockchainInfo(mnemonic);
     }
 
     componentDidUpdate() {
@@ -25,13 +25,13 @@ export default (SuccessRoute, network, contractJsons) => {
         this.props.navigation.navigate('MnemonicCollection');
         return false;
       }
-      return true;
+      return mnemonic;
     }
 
-    async collectBlockchainInfo() {
+    async collectBlockchainInfo(mnemonic) {
       try {
         // get web3, set it in redux
-        const web3 = await getWeb3(network);
+        const web3 = await getWeb3(network, mnemonic);
         this.props.fetchedWeb3(web3);
 
         // get account info, set it in redux
