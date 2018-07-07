@@ -12,6 +12,7 @@ export default (SuccessRoute, network, contractJsons) => {
     async componentDidMount() {
       const mnemonic = await this.checkMnemonic();
       if (mnemonic) await this.collectBlockchainInfo(mnemonic);
+      else this.props.navigation.navigate('Wallet');
     }
 
     componentDidUpdate() {
@@ -21,11 +22,7 @@ export default (SuccessRoute, network, contractJsons) => {
     async checkMnemonic() {
       // UNSAFE
       const mnemonic = await getMnemonic();
-      if (!mnemonic) {
-        this.props.navigation.navigate('MnemonicCollection');
-        return false;
-      }
-      return mnemonic;
+      return mnemonic ? mnemonic : false;
     }
 
     async collectBlockchainInfo(mnemonic) {

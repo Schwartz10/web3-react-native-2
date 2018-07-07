@@ -5,7 +5,7 @@ import { setMnemonic } from '../NATIVE/keychainOps'
 
 export default class MnemonicCollector extends Component {
   static navigationOptions = {
-    title: 'Mnemonic'
+    title: 'Wallet'
   }
 
   constructor(props) {
@@ -26,7 +26,7 @@ export default class MnemonicCollector extends Component {
       <View>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={mnemonic => this.setState({mnemonic})}
+          onChangeText={mnemonic => this.setState({ mnemonic })}
           value={this.state.mnemonic}
         />
         <Button

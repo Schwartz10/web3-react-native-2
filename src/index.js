@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
-import { StackNavigator } from 'react-navigation';
+import { TabNavigator } from 'react-navigation';
 import {View} from 'react-native'
 
-import MnemonicCollector from './utils/MnemonicCollector';
-import Home from './pages/Home';
+import Wallet from './pages/Wallet';
 import Web3Manager from './utils/Web3Manager';
+import Home from './pages/Home';
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json';
 
 // to be extracted
 const network = "https://ropsten.infura.io/"
 const contracts = [ SimpleStorageContract ]
 
+// any Screen that needs web3 to access can be passed through the web3Manager HOC
 const AuthorizedHomePage = Web3Manager(Home, network, contracts);
 
-export default StackNavigator({
+export default TabNavigator({
   Home: {
     screen: AuthorizedHomePage
   },
-  MnemonicCollection: {
-    screen: MnemonicCollector
+  Wallet: {
+    screen: Wallet
   }
 });
