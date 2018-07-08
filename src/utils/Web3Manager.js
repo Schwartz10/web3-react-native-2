@@ -8,7 +8,7 @@ import { fetchedWeb3, fetchedEthAddress } from '../redux/web3/actions';
 import { fetchedContracts } from '../redux/contracts/actions';
 import { getMnemonic } from '../NATIVE/keychainOps';
 
-export default (SuccessRoute, FailureRoute, network) => {
+export default (SuccessRoute, FailureRoute) => {
   return class Web3Manager extends Component {
     constructor(props){
       super(props);
@@ -27,13 +27,17 @@ export default (SuccessRoute, FailureRoute, network) => {
       else this.setState({ mnemonic: '' });
     }
 
-    // componentDidUpdate() {
-    //   // need to re-invoke this.initializeContracts when network changes
-    // }
+    componentDidUpdate({ network }) {
+      if (network !== this.props.network && this.state.mnemonic) {
+        this.collectBlockchainInfo(this.state.mnemonic)
+      }
+      // need to re-invoke this.initializeContracts when network changes
+    }
 
     async collectBlockchainInfo(mnemonic) {
+      // populate global react-native vars with web3 and account information
       try {
-        const web3 = await getWeb3(network, mnemonic);
+        const web3 = await getWeb3(this.props.network, mnemonic);
         global.web3 = web3;
 
         const accounts = await getAccounts(web3);

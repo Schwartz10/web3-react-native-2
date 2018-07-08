@@ -6,9 +6,9 @@ export default class NetworkPicker extends Component {
     const { handleNetworkChange } = this.props;
     return (
       <View>
-        <Button title="mainnet" onPress={() => handleNetworkChange('mainnet')} />
-        <Button title="rinkeby" onPress={() => handleNetworkChange('rinkeby')} />
-        <Button title="ropsten" onPress={() => handleNetworkChange('ropsten')} />
+        <Button title="mainnet" onPress={() => handleNetworkChange('https://mainnet.infura.io/')} />
+        <Button title="rinkeby" onPress={() => handleNetworkChange('https://rinkeby.infura.io/')} />
+        <Button title="ropsten" onPress={() => handleNetworkChange('https://ropsten.infura.io/')} />
         {/* <Button title="other" onPress={() => handleNetworkChange('other')} /> */}
       </View>
     );
