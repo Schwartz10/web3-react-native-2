@@ -14,14 +14,17 @@ export default (SuccessRoute, FailureRoute, network) => {
       super(props);
       this.state = {
         mnemonic: false,
+        dataLoaded: true,
       }
     }
 
     async componentDidMount() {
+      if (!global.web3) global.web3 = null;
+      if (!global.accounts) global.accounts = [];
+
       const { password } = await getMnemonic();
       if (password) this.setState({ mnemonic: password }, () => this.collectBlockchainInfo(password))
       else this.setState({ mnemonic: '' });
-      this.collectBlockchainInfo(password)
     }
 
     // componentDidUpdate() {
@@ -38,12 +41,14 @@ export default (SuccessRoute, FailureRoute, network) => {
       } catch (err) {
         throw new Error(err)
       }
+
+      this.setState({ dataLoaded: true });
     }
 
     render() {
       const RenderedView = this.state.mnemonic ? SuccessRoute : FailureRoute;
       return (
-        <RenderedView />
+        <RenderedView accounts={this.state.accounts} />
       );
     }
   }
