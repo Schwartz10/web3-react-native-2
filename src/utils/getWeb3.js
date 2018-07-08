@@ -14,7 +14,6 @@ export const getWeb3 = (rpcUrl) => {
     const provider = new HDWalletProvider(mnemonic, rpcUrl);
 
     const web3 = new Web3(provider);
-
     return resolve(web3);
   })
 }

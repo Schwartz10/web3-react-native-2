@@ -9,7 +9,7 @@ export default class NetworkPicker extends Component {
         <Button title="mainnet" onPress={() => handleNetworkChange('mainnet')} />
         <Button title="rinkeby" onPress={() => handleNetworkChange('rinkeby')} />
         <Button title="ropsten" onPress={() => handleNetworkChange('ropsten')} />
-        <Button title="other" onPress={() => handleNetworkChange('other')} />
+        {/* <Button title="other" onPress={() => handleNetworkChange('other')} /> */}
       </View>
     );
   }

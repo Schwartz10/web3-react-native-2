@@ -8,11 +8,11 @@ import Home from './pages/Home';
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json';
 
 // to be extracted
-const network = "https://ropsten.infura.io/"
+const network = "https://rinkeby.infura.io/"
 const contracts = [ SimpleStorageContract ]
 
 // any Screen that needs web3 to access can be passed through the web3Manager HOC
-const AuthorizedHomePage = Web3Manager(Home, network, contracts);
+const AuthorizedHomePage = Web3Manager(Home, Home, network);
 
 export default TabNavigator({
   Home: {
