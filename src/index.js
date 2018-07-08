@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native'
+import { View, Text, Button } from 'react-native'
 
 import Wallet from './pages/Wallet';
 import Web3ManagerHOC from './utils/Web3Manager';
 import MnemonicCollector from './pages/MnemonicCollector';
 import NetworkPicker from './components/NetworkPicker';
+
+import { resetMnemonic } from './NATIVE/keychainOps';
 
 // to be extracted
 const network = "https://rinkeby.infura.io/"
@@ -39,6 +41,7 @@ export default class ContainerComponent extends Component {
           activeNetwork={this.state.network}
         />
         <Web3Manager network={this.state.network} />
+        <Button title="reset mnemonic" onPress={resetMnemonic} />
       </View>
     );
   }

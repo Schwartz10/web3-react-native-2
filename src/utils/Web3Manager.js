@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import ethUtil from 'ethereumjs-util';
 
 import { getWeb3, getAccounts } from './getWeb3';
-import { fetchedWeb3, fetchedEthAddress } from '../redux/web3/actions';
-import { fetchedContracts } from '../redux/contracts/actions';
 import { getMnemonic } from '../NATIVE/keychainOps';
 
 export default (SuccessRoute, FailureRoute) => {
@@ -31,7 +29,6 @@ export default (SuccessRoute, FailureRoute) => {
       if (network !== this.props.network && this.state.mnemonic) {
         this.collectBlockchainInfo(this.state.mnemonic)
       }
-      // need to re-invoke this.initializeContracts when network changes
     }
 
     async collectBlockchainInfo(mnemonic) {

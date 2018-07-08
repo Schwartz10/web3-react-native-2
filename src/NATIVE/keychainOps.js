@@ -11,3 +11,9 @@ export const getMnemonic = async () => {
     console.log('Keychain couldn\'t be accessed!', error);
   }
 }
+
+// FOR TESTING
+export const resetMnemonic = async () => {
+  await Keychain.resetGenericPassword()
+  console.log('reset')
+}

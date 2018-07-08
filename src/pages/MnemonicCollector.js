@@ -11,10 +11,14 @@ export default class MnemonicCollector extends Component {
   }
 
   async onPress() {
-    // set the mnemonic in our keychain
-    await setMnemonic(this.state.mnemonic);
+    const { mnemonic } = this.state;
+    if (mnemonic.split(' ').length === 12) {
+      // set the mnemonic in our keychain
+      await setMnemonic(this.state.mnemonic);
+    } else {
+      throw new Error('that is not a valid seed phrase')
+    }
     // when the user navigates home, they should get through the hoc
-    this.props.navigation.navigate('Home');
   }
 
   render(){
