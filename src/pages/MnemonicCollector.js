@@ -15,10 +15,10 @@ export default class MnemonicCollector extends Component {
     if (mnemonic.split(' ').length === 12) {
       // set the mnemonic in our keychain
       await setMnemonic(this.state.mnemonic);
+      this.props.handleMnemonicChange(this.state.mnemonic);
     } else {
       throw new Error('that is not a valid seed phrase')
     }
-    // when the user navigates home, they should get through the hoc
   }
 
   render(){
