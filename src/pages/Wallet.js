@@ -1,40 +1,13 @@
 import React, { Component } from 'react';
-import { View, TextInput, Button } from 'react-native'
+import { View, Text } from 'react-native'
 
-import { setMnemonic } from '../NATIVE/keychainOps'
-
-export default class MnemonicCollector extends Component {
-  static navigationOptions = {
-    title: 'Wallet'
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = { mnemonic: 'Enter your mnemonic' };
-    this.onPress = this.onPress.bind(this);
-  }
-
-  async onPress() {
-    // set the mnemonic in our keychain
-    await setMnemonic(this.state.mnemonic);
-    // when the user navigates home, they should get through the hoc
-    this.props.navigation.navigate('Home');
-  }
-
+export default class Wallet extends Component {
   render(){
     return (
       <View>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={mnemonic => this.setState({ mnemonic })}
-          value={this.state.mnemonic}
-        />
-        <Button
-          onPress={this.onPress}
-          title="Store Mnemonic"
-          color="#841584"
-          accessibilityLabel="Safely store your mnemonic in your phones keychain"
-        />
+        <Text style={{ textAlign: 'center', fontSize: 30, fontWeight: 'bold' }}>
+          You Are logged in as account: {global.accounts} on network: {global.network}
+        </Text>
       </View>
     );
   }

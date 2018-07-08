@@ -1,74 +1,87 @@
 import React, { Component } from 'react';
-import contract from 'truffle-contract';
-import { connect } from 'react-redux';
+import { View, Text } from 'react-native';
+
+import Wallet from '../pages/Wallet';
+import MnemonicCollector from '../pages/MnemonicCollector';
+import NetworkPicker from '../components/NetworkPicker';
 
 import { getWeb3, getAccounts } from './getWeb3';
-import { fetchedWeb3, fetchedEthAddress } from '../redux/web3/actions';
-import { fetchedContracts } from '../redux/contracts/actions';
 import { getMnemonic } from '../NATIVE/keychainOps';
 
-export default (SuccessRoute, network, contractJsons) => {
-  class Web3Manager extends Component {
-    async componentDidMount() {
-      const mnemonic = await this.checkMnemonic();
-      if (mnemonic) await this.collectBlockchainInfo(mnemonic);
-      else this.props.navigation.navigate('Wallet');
+export default class Web3Manager extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      network: 'https://rinkeby.infura.io/',
+      mnemonic: false,
+      dataLoaded: true,
     }
-
-    componentDidUpdate() {
-      // need to re-invoke this.initializeContracts when network changes
-    }
-
-    async checkMnemonic() {
-      // UNSAFE
-      const mnemonic = await getMnemonic();
-      return mnemonic ? mnemonic : false;
-    }
-
-    async collectBlockchainInfo(mnemonic) {
-      try {
-        // get web3, set it in redux
-        const web3 = await getWeb3(network, mnemonic);
-        this.props.fetchedWeb3(web3);
-
-        // get account info, set it in redux
-        const accounts = await getAccounts(web3);
-        // how should we handle array of accounts?
-        this.props.fetchedEthAddress(accounts[0]);
-
-        // fetch contracts, set them in redux
-        const contracts = await this.initializeContracts(web3);
-        this.props.fetchedContracts(contracts);
-      } catch (err) {
-        throw new Error(err)
-      }
-    }
-
-    initializeContracts(web3) {
-      return Promise.all(contractJsons.map(async contractJson => {
-        try {
-          const truffleContract = contract(contractJson);
-          truffleContract.setProvider(web3.currentProvider);
-          // const contractInstance = await truffleContract.deployed();
-          const contractInstance = await truffleContract.at('0x01dc2837360d57fe3b596d98e0ef56dbb945690c');
-          return contractInstance;
-        } catch (err) {
-          return console.log(err)
-        }
-      }));
-    }
-
-    render() {
-      return (
-        <SuccessRoute {...this.props} />
-      );
-    }
+    this.handleNetworkChange = this.handleNetworkChange.bind(this);
+    this.handleMnemonicChange = this.handleMnemonicChange.bind(this);
   }
 
-  return connect(null, {
-    fetchedWeb3,
-    fetchedEthAddress,
-    fetchedContracts
-  })(Web3Manager);
+  handleNetworkChange(network){
+    global.network = network
+    this.setState({ network })
+  }
+
+  handleMnemonicChange(mnemonic){ this.setState({ mnemonic }) }
+
+  async componentDidMount() {
+    if (!global.web3) global.web3 = null;
+    if (!global.accounts) global.accounts = [];
+    if (!global.network) global.network = this.state.network;
+
+    const { password } = await getMnemonic();
+    if (password) this.setState({ mnemonic: password }, () => this.collectBlockchainInfo(password))
+    else this.setState({ mnemonic: '' });
+  }
+
+  componentDidUpdate(prevProps, { network, mnemonic }) {
+    const networkChanged = this.state.mnemonic &&  network !== this.state.network;
+    const mnemonicChanged = this.state.mnemonic && mnemonic !== this.state.mnemonic;
+    if (networkChanged || mnemonicChanged) this.collectBlockchainInfo(this.state.mnemonic);
+  }
+
+  async collectBlockchainInfo(mnemonic) {
+    // populate global react-native vars with web3 and account information
+    try {
+      const web3 = await getWeb3(this.state.network, mnemonic);
+      global.web3 = web3;
+
+      const accounts = await getAccounts(web3);
+      global.accounts = accounts;
+    } catch (err) {
+      throw new Error(err)
+    }
+
+    this.setState({ dataLoaded: true });
+  }
+
+  render() {
+    return (
+      <View>
+        <Text style={{ textAlign: 'center', fontSize: 30, fontWeight: 'bold' }}>
+          Wallet
+        </Text>
+
+        <NetworkPicker
+          handleNetworkChange={this.handleNetworkChange}
+          activeNetwork={this.state.network}
+        />
+        {
+          this.state.mnemonic
+          ? <Wallet
+              accounts={this.state.accounts}
+              network={this.state.network}
+            />
+          : <MnemonicCollector
+              accounts={this.state.accounts}
+              handleMnemonicChange={this.handleMnemonicChange}
+            />
+        }
+      </View>
+    );
+  }
 }
 
