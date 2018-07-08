@@ -5,12 +5,12 @@ import Promise from 'bluebird';
 import HDWalletProvider from 'truffle-hdwallet-provider';
 
 // need to pass provider in
-export const getWeb3 = (rpcUrl, mnemonic) => {
+export const getWeb3 = (rpcUrl) => {
   return new Promise((resolve, reject) => {
     if (!rpcUrl) return reject(new Error('No RPC Url specified'));
     // if (!mnemonic) return reject(new Error('No provider specified'));
 
-    mnemonic = 'knee violin certain rebuild rival couch wonder bind bridge delay tourist poet';
+    const mnemonic = 'knee violin certain rebuild rival couch wonder bind bridge delay tourist poet';
     const provider = new HDWalletProvider(mnemonic, rpcUrl);
 
     const web3 = new Web3(provider);

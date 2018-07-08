@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import contract from 'truffle-contract';
 import { connect } from 'react-redux';
+import ethUtil from 'ethereumjs-util';
 
 import { getWeb3, getAccounts } from './getWeb3';
 import { fetchedWeb3, fetchedEthAddress } from '../redux/web3/actions';
@@ -35,6 +36,13 @@ export default (SuccessRoute, network, contractJsons) => {
         const accounts = await getAccounts(web3);
         // how should we handle array of accounts?
         this.props.fetchedEthAddress(accounts[0]);
+
+        web3.eth.defaultAccount = accounts[0].toLowerCase()
+
+        // web3.eth.personal.sign('yo', accounts[0].toLowerCase(), (err, sig) => {
+        //   if(err) console.log('ERROR', err)
+        //   else console.log(sig)
+        // })
 
         // fetch contracts, set them in redux
         const contracts = await this.initializeContracts(web3);
