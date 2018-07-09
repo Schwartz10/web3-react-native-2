@@ -1,6 +1,13 @@
-# React Native Truffle Box
+# React Native Wallet Node Module
 
-**!!!WARNING!!!** This box is in active development and missing some important security features. Do not store any large balances in the included wallet. Do not deploy this to production.
+**!!!WARNING!!!** This node module is in active development and hasn't been properly vetted for security flaws. Do not store any large balances in the included wallet. Do not deploy this to production.
+
+# Setup
+
+
+
+
+
 
 ## React Native
 

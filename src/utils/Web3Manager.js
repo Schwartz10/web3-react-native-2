@@ -6,6 +6,7 @@ import MnemonicCollector from '../pages/MnemonicCollector';
 import NetworkPicker from '../components/NetworkPicker';
 
 import { getWeb3, getAccounts } from './getWeb3';
+import web3EventEmitter from './events';
 import { getMnemonic } from '../NATIVE/keychainOps';
 
 export default class Web3Manager extends Component {
@@ -14,14 +15,14 @@ export default class Web3Manager extends Component {
     this.state = {
       network: 'https://rinkeby.infura.io/',
       mnemonic: false,
-      dataLoaded: true,
+      dataLoaded: false
     }
     this.handleNetworkChange = this.handleNetworkChange.bind(this);
     this.handleMnemonicChange = this.handleMnemonicChange.bind(this);
   }
 
   handleNetworkChange(network){
-    global.network = network
+    web3EventEmitter._changedNetwork(network);
     this.setState({ network })
   }
 
@@ -29,8 +30,7 @@ export default class Web3Manager extends Component {
 
   async componentDidMount() {
     if (!global.web3) global.web3 = null;
-    if (!global.accounts) global.accounts = [];
-    if (!global.network) global.network = this.state.network;
+    if (!global.accounts) global.accounts = null;
 
     const { password } = await getMnemonic();
     if (password) this.setState({ mnemonic: password }, () => this.collectBlockchainInfo(password))
@@ -50,7 +50,8 @@ export default class Web3Manager extends Component {
       global.web3 = web3;
 
       const accounts = await getAccounts(web3);
-      global.accounts = accounts;
+      global.accounts = accounts[0];
+      web3EventEmitter._changedAccount(accounts[0]);
     } catch (err) {
       throw new Error(err)
     }

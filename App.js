@@ -3,7 +3,7 @@ import React from 'react';
 import Routes from './src';
 
 const App = () => (
-  <Routes />
+  <Wallet />
 );
 
 export default App;
