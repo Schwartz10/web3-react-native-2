@@ -1,6 +1,0 @@
-node_modules/
-.expo/
-npm-debug.*
-build/
-android/local.properties
-android/.gradle

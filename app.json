@@ -1,7 +1,4 @@
 {
-  "expo": {
-    "sdkVersion": "21.0.0"
-  },
-  "name": "test5",
-  "displayName": "react-native-box"
+  "name": "web3reactnative",
+  "displayName": "web3reactnative"
 }
